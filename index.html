@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0b0e14; --card: rgba(30, 41, 59, 0.7); --accent: #00e5ff; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        
+        .container { 
+            background: var(--card); backdrop-filter: blur(15px); padding: 3rem; border-radius: 24px; 
+            text-align: center; border: 1px solid rgba(255,255,255,0.1); 
+            animation: fadeIn 1s ease-out; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            width: 350px;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .avatar { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--accent); margin-bottom: 20px; transition: transform 0.3s; }
+        .avatar:hover { transform: scale(1.05); }
+        
+        .status-badge { background: rgba(0,229,255,0.1); color: var(--accent); padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 20px; display: inline-block; }
+        .uptime { font-size: 2rem; font-weight: 600; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="bot-avatar" src="" alt="Bot Avatar" class="avatar">
+        <div class="status-badge">● ONLINE</div>
+        <div id="bot-name" style="font-size: 1.2rem; font-weight: 600;">SIX-ONE-NINE [ STATUS ]</div>
+        <div class="uptime" id="uptime">0h 0m 0s</div>
+        <div style="color: #94a3b8; font-size: 0.9rem;">Server Uptime</div>
+    </div>
+
+    <script>
+        async function fetchStatus() {
+            const res = await fetch('/api/status');
+            const data = await res.json();
+            document.getElementById('uptime').innerText = data.uptime;
+            document.getElementById('bot-avatar').src = data.avatar;
+        }
+        setInterval(fetchStatus, 1000);
+        fetchStatus();
+    </script>
+</body>
+</html>

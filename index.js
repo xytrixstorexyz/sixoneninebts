@@ -2,6 +2,23 @@ const { Client, GatewayIntentBits, PermissionFlagsBits, SlashCommandBuilder, Emb
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const startTime = Date.now(); // เก็บเวลาเริ่มทำงาน
+
+app.get('/api/status', (req, res) => {
+    const uptime = process.uptime();
+    const h = Math.floor(uptime / 3600);
+    const m = Math.floor((uptime % 3600) / 60);
+    const s = Math.floor(uptime % 60);
+
+    res.json({
+        uptime: `${h}h ${m}m ${s}s`,
+        // ส่ง URL ของรูป Profile บอทไปแสดงที่หน้าเว็บ
+        avatar: client.user.displayAvatarURL({ dynamic: true, size: 256 })
+    });
+});
+
+// เสิร์ฟหน้าไฟล์ HTML (สร้างไฟล์ชื่อ index.html ไว้ในโฟลเดอร์เดียวกับโค้ด)
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 // --- CONFIG ---
 const CONFIG_FILE = path.join(__dirname, 'welcome_config.json');
