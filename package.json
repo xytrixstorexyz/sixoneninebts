@@ -1,18 +1,17 @@
 {
-  "name": "sixonenine-bot",
+  "name": "welcomes",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
   "dependencies": {
-    "discord.js": "^14.16.3",
-    "express": "^4.19.2",
-    "distube": "^5.0.3",
-    "@distube/youtube": "^1.0.1",
-    "@discordjs/voice": "^0.17.0",
-    "tweetnacl": "^1.0.3",
-    "opusscript": "^0.0.8",
-    "ffmpeg-static": "^5.2.0"
+    "discord.js": "^14.26.4",
+    "express": "^5.2.1"
   }
 }
