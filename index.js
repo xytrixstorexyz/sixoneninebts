@@ -2,25 +2,9 @@ const { Client, GatewayIntentBits, PermissionFlagsBits, SlashCommandBuilder, Emb
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const startTime = Date.now(); // เก็บเวลาเริ่มทำงาน
 
-app.get('/api/status', (req, res) => {
-    const uptime = process.uptime();
-    const h = Math.floor(uptime / 3600);
-    const m = Math.floor((uptime % 3600) / 60);
-    const s = Math.floor(uptime % 60);
-
-    res.json({
-        uptime: `${h}h ${m}m ${s}s`,
-        avatar: client.user.displayAvatarURL({ dynamic: true, size: 256 })
-    });
-}); // ตรวจสอบว่ามีวงเล็บปิดนี้ครบถ้วนหรือไม่
-
-// เสิร์ฟหน้าไฟล์ HTML (สร้างไฟล์ชื่อ index.html ไว้ในโฟลเดอร์เดียวกับโค้ด)
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-
-// --- CONFIG ---
-const CONFIG_FILE = path.join(__dirname, 'welcome_config.json');
+// 1. ประกาศตัวแปร app ให้เสร็จก่อน
+const app = express();
 const PORT = process.env.PORT || 3000;
 
 const client = new Client({
@@ -31,8 +15,28 @@ const client = new Client({
     ]
 });
 
-let welcomeData = {};
+// 2. ตั้งค่า API Status (ตอนนี้เรียก app ได้แล้ว)
+app.get('/api/status', (req, res) => {
+    const uptime = process.uptime();
+    const h = Math.floor(uptime / 3600);
+    const m = Math.floor((uptime % 3600) / 60);
+    const s = Math.floor(uptime % 60);
 
+    res.json({
+        uptime: `${h}h ${m}m ${s}s`,
+        avatar: client.user ? client.user.displayAvatarURL({ dynamic: true, size: 256 }) : null
+    });
+});
+
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+
+// 3. เริ่มรัน server
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+
+// --- CONFIG ---
+const CONFIG_FILE = path.join(__dirname, 'welcome_config.json');
+
+let welcomeData = {};
 if (fs.existsSync(CONFIG_FILE)) {
     try {
         welcomeData = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
@@ -44,11 +48,6 @@ if (fs.existsSync(CONFIG_FILE)) {
 function saveConfig() {
     fs.writeFileSync(CONFIG_FILE, JSON.stringify(welcomeData, null, 4), 'utf8');
 }
-
-// --- EXPRESS (24/7) ---
-const app = express();
-app.get('/', (req, res) => res.send('Bot is running!'));
-app.listen(PORT);
 
 // --- COMMANDS & EVENTS ---
 client.once('ready', async () => {
@@ -67,7 +66,6 @@ client.once('ready', async () => {
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return;
-
     if (interaction.commandName === 'setup-welcome') {
         const channel = interaction.options.getChannel('channel');
         const leaveChannel = interaction.options.getChannel('leave_channel');
@@ -79,48 +77,39 @@ client.on('interactionCreate', async interaction => {
             message: message
         };
         saveConfig();
-
         return interaction.reply({ content: '✅ ตั้งค่าสำเร็จ!', ephemeral: true });
     }
 });
 
-// ต้อนรับ
+// ต้อนรับและแจ้งเตือน (โค้ดเดิมของคุณ)
 client.on('guildMemberAdd', async member => {
     const config = welcomeData[member.guild.id];
     if (!config || !config.channelId) return;
-
     const channel = member.guild.channels.cache.get(config.channelId);
     if (!channel) return;
-
     const welcomeMessage = config.message
         .replace(/{user}/g, `<@${member.id}>`)
         .replace(/{server}/g, `**${member.guild.name}**`);
-
     const embed = new EmbedBuilder()
         .setColor('#00E5FF')
         .setTitle('👋 ยินดีต้อนรับสมาชิกใหม่!')
         .setDescription(welcomeMessage)
         .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
         .setTimestamp();
-
     await channel.send({ embeds: [embed] });
 });
 
-// แจ้งเตือนคนออก
 client.on('guildMemberRemove', async member => {
     const config = welcomeData[member.guild.id];
     if (!config || !config.leaveChannelId) return;
-
     const channel = member.guild.channels.cache.get(config.leaveChannelId);
     if (!channel) return;
-
     const embed = new EmbedBuilder()
         .setColor('#FF4444')
         .setTitle('😢 สมาชิกออกจากเซิร์ฟเวอร์')
         .setDescription(`**${member.user.tag}** ได้ออกจากเซิร์ฟเวอร์ไปแล้ว`)
         .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
         .setTimestamp();
-
     await channel.send({ embeds: [embed] });
 });
 
