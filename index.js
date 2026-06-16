@@ -12,10 +12,9 @@ app.get('/api/status', (req, res) => {
 
     res.json({
         uptime: `${h}h ${m}m ${s}s`,
-        // ส่ง URL ของรูป Profile บอทไปแสดงที่หน้าเว็บ
         avatar: client.user.displayAvatarURL({ dynamic: true, size: 256 })
     });
-});
+}); // ตรวจสอบว่ามีวงเล็บปิดนี้ครบถ้วนหรือไม่
 
 // เสิร์ฟหน้าไฟล์ HTML (สร้างไฟล์ชื่อ index.html ไว้ในโฟลเดอร์เดียวกับโค้ด)
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
