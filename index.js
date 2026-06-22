@@ -193,4 +193,4 @@ client.on('guildMemberRemove', async member => {
 });
 
 // ล็อกอินบอทด้วย Token จาก Environment Variables (ไฟล์ .env)
-client.login(process.env.DISCORD_TOKEN);
+client.login(process.env.TOKEN);
