@@ -34,7 +34,7 @@ app.get('/api/status', (req, res) => {
 // หน้า Landing Page (เว็บแนะนำบอท PUBG)
 app.get('/', (req, res) => {
     // กำหนดค่าเริ่มต้นเผื่อบอทยังล็อกอินไม่เสร็จ
-    let botName = 'PUBG Community Bot';
+    let botName = 'SIX ONE NINE';
     let botAvatar = 'https://i.imgur.com/w3duR07.png';
 
     // ดึงข้อมูลจากตัวบอทโดยตรง (ถ้าบอทพร้อมทำงานแล้ว)
@@ -84,13 +84,13 @@ app.get('/', (req, res) => {
             </div>
             <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-xl hover:border-blue-500/50 transition-all duration-300 backdrop-blur-sm">
                 <div class="text-blue-400 text-3xl mb-4">🎮</div>
-                <h3 class="text-xl font-semibold mb-2 text-white">รองรับหลากหลายเกม</h3>
-                <p class="text-slate-400 text-sm leading-relaxed">ไม่ใช่แค่ PUBG! เรายังมีโซนพูดคุย แลกเปลี่ยนเทคนิค และสร้างห้องสำหรับเกมยอดฮิตอื่นๆ เพื่อตอบโจทย์ทุกไลฟ์สไตล์</p>
+                <h3 class="text-xl font-semibold mb-2 text-white">คอมมูนิตี้ที่ดี</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">สังคมในดิสเป็นกันเองสุดๆและแอดมินดูแลดีมาก</p>
             </div>
             <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-xl hover:border-blue-500/50 transition-all duration-300 backdrop-blur-sm">
                 <div class="text-blue-400 text-3xl mb-4">⚡</div>
-                <h3 class="text-xl font-semibold mb-2 text-white">ระบบต้อนรับอัจฉริยะ</h3>
-                <p class="text-slate-400 text-sm leading-relaxed">มีระบบแจ้งเตือนคนเข้า-ออกเซิร์ฟเวอร์แบบอัตโนมัติ สวยงามผ่าน Embed พร้อมให้ตั้งค่าง่ายๆ ด้วยคำสั่ง Slash Command</p>
+                <h3 class="text-xl font-semibold mb-2 text-white">ระบบบอทที่ดี</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">มีระบบแจ้งเตือนคนเข้า-ออกเซิร์ฟเวอร์แบบอัตโนมัติ และระบบกันเรื้อนต่างๆนาๆ</p>
             </div>
         </div>
     </main>
